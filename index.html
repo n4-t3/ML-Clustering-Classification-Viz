@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Machine Learning Visualization</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="container">
+        <h1>Interactive Machine Learning Visualization</h1>
+
+        <div class="controls">
+          <label for="themeSwitchBtn" class="switch-label"
+            >Toggle Dark Mode</label
+          >
+          <input type="checkbox" id="themeSwitchBtn" />
+
+          <div class="point-controls">
+            <button id="class1Btn" class="active">Class 1</button>
+            <button id="class2Btn">Class -1</button>
+          </div>
+
+          <select id="methodSelect">
+            <optgroup label="Classification">
+              <option value="svm">Support Vector Machine</option>
+              <option value="knn">K-Nearest Neighbors</option>
+              <option value="decision-tree">Decision Tree</option>
+              <option value="random-forest">Random Forest</option>
+              <option value="logistic-regression">Logistic Regression</option>
+              <option value="naive-bayes">Naive Bayes</option>
+            </optgroup>
+            <optgroup label="Clustering">
+              <option value="kmeans">K-Means Clustering</option>
+              <option value="dbscan">DBSCAN Clustering</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="plotCanvas" width="800" height="500"></canvas>
+        </div>
+
+        <div class="button-controls">
+          <button id="runBtn">Run</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+
+        <div class="algorithm-description" id="algorithmDescription">
+          Select an algorithm to see its description.
+        </div>
+
+        <div class="info">
+          <p>
+            Click on the coordinate plane to add points. Toggle between classes
+            using the buttons above.
+          </p>
+          <p id="pointCount">Points: 0 (Class 1: 0, Class -1: 0)</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      const body = document.body;
+      const currentTheme = localStorage.getItem("theme");
+
+      if (currentTheme === "dark") {
+        const container = document.querySelector(".container");
+        const h1Elements = document.querySelectorAll("h1");
+        container.classList.add("dark-mode");
+        h1Elements.forEach((h1) => {
+          h1.classList.add("dark-mode");
+        });
+        body.classList.add("dark-mode");
+        document.getElementById("themeSwitchBtn").checked = true;
+      }
+
+      function toggleTheme() {
+        const body = document.querySelector("body");
+        const container = document.querySelector(".container");
+        const h1Elements = document.querySelectorAll("h1");
+
+        body.classList.toggle("dark-mode");
+        container.classList.toggle("dark-mode");
+
+        h1Elements.forEach((h1) => {
+          h1.classList.toggle("dark-mode");
+        });
+
+        const theme = body.classList.contains("dark-mode") ? "dark" : "light";
+        localStorage.setItem("theme", theme);
+
+        if (window.initCanvas) {
+          window.initCanvas();
+        }
+      }
+
+      const themeSwitchButton = document.getElementById("themeSwitchBtn");
+      if (themeSwitchButton) {
+        themeSwitchButton.addEventListener("change", toggleTheme);
+      }
+    </script>
+
+    <script src="main.js"></script>
+    <script src="algorithms/svm.js"></script>
+    <script src="algorithms/knn.js"></script>
+    <script src="algorithms/decision-tree.js"></script>
+    <script src="algorithms/random-forest.js"></script>
+    <script src="algorithms/logistic-regression.js"></script>
+    <script src="algorithms/naive-bayes.js"></script>
+    <script src="algorithms/kmeans.js"></script>
+    <script src="algorithms/dbscan.js"></script>
+  </body>
+</html>
